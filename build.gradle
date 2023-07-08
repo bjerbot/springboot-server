@@ -18,6 +18,15 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//Spring JDBC
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	//MySQL Driver(根據使用的資料庫 去加入相應的DRIVER)
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
+	//驗證請求參數
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 tasks.named('test') {
