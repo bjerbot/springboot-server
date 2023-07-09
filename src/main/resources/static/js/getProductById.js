@@ -5,24 +5,24 @@ searchProductForm.addEventListener("submit", e => {
 
     let productId = document.querySelector("#productId").value;
 
-    let action = "http://localhost:8080/product/" + productId;
+    let url = "http://localhost:8080/product/query/" + productId;
 
-    console.log(action);
-
-    fetch(action).then(response => {
+    fetch(url).then(response => {
         if(response.ok){
             console.log(response);
             return response.json();
+        }else if(response.status == 404){
+            let showResponse = document.querySelector("p.responseData");
+            showResponse.innerHTML = "沒有第 " + productId + "筆資料，請從新確認";
+            throw new Error("請求失敗，狀態碼： " + response.status);
         }
     }).then(data => {
         console.log(data);
-        console.log(typeof data);
         let dataToStr = JSON.stringify(data, null, "<br>");
 
         console.log(dataToStr);
 
-        let showResponse = searchProductForm.children[3];
-        console.log(showResponse);
+        let showResponse = document.querySelector("p.responseData");
         showResponse.innerHTML = dataToStr;
     })
 })

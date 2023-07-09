@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增商品測試</title>
+</head>
+<body>
+<div id="Container">
+  <form id="createProduct">
+    <h3>新增商品測試</h3>
+    <span>商品名稱：</span>
+    <input id="productName" type="text"><br>
+    <span>商品種類：</span>
+    <select id="category">
+      <option value="FOOD">Food</option>
+      <option value="CAR">Car</option>
+      <option value="BOOK">Book</option>
+      <option value="SMART_PHONE">Smart phone</option>
+      <option value="GAME">Game</option>
+    </select><br>
+    <span>商品照片：</span>
+    <input id="imageUrl" type="url"><br>
+    <span>商品價格：</span>
+    <input id="price" type="number"><br>
+    <span>現貨數量：</span>
+    <input id="stock" type="number"><br>
+    <span>商品敘述：</span>
+    <input id="description" type="text"><br>
+    <button type="submit">新增</button>
+  </form>
+
+  <p class="responseData"></p>
+</div>
+
+<script src="js/createProduct.js"></script>
+</body>
+</html>

@@ -3,9 +3,7 @@ package com.hung.springbootserver.dto;
 import com.hung.springbootserver.constant.ProductCategory;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
-
-public class RequestProduct {
+public class ProductRequest {
 
     @NotNull
     private String productName;
