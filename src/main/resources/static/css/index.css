@@ -1,0 +1,183 @@
+
+nav{
+    width:100%;
+    background-color: cadetblue;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    position: sticky;
+    top:0;
+    z-index: 2;
+}
+
+nav h3{
+    color: white;
+    font-weight: bold;
+    /*display: inline-block;*/
+    margin-bottom: 0;
+    padding:10px;
+}
+
+nav ul{
+    /*border:2px solid black;*/
+    display:flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding:10px;
+    margin-left: auto;
+    margin-bottom: 0;
+}
+
+nav ul li {
+    list-style-type: none;
+    /*text-align: center;*/
+    margin:auto 10px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color: white;
+    font-weight: bold;
+}
+
+/*main{*/
+/*    border:2px solid black;*/
+/*    display:flex;*/
+/*    flex-wrap: nowrap;*/
+/*    flex-direction: row;*/
+/*    padding:10px;*/
+/*}*/
+
+div.left-part{
+    /*background-color: aqua;*/
+    display: inline-block;
+    width:20%;
+    min-width:120px;
+    position:sticky;
+    top:120px;
+    left:0;
+    z-index: 2;
+}
+
+div.left-part ul{
+    padding: 0;
+    margin:0px 20px;
+    border-radius: 5px;
+}
+
+div.left-part ul li{
+    list-style-type:none;
+    text-align: center;
+    padding:10px;
+    background-color: cadetblue;
+
+}
+
+div.left-part ul li:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+div.left-part ul li a{
+    text-decoration:none;
+    font-weight: bold;
+    color:white;
+}
+
+div.left-part ul li a:hover{
+
+}
+
+div.right-part{
+    width:70%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 25%;
+    position:relative;
+    top:-150px;
+}
+
+div.right-part div.card {
+    margin: 20px 10px;
+    width: 15rem;
+}
+
+div.right-part div.card img{
+    width: 15rem;
+    height:15rem;
+}
+
+div.right-part div.card div.card-body{
+    /*border:2px solid black;*/
+}
+
+div.right-part div.card div.card-body h5.product_name{
+    background-color: rgba(200, 200, 200, 0.3);
+    border-radius: 5px;
+}
+
+div.right-part div.card div.card-body p.description{
+    background-color: rgba(200, 200, 200, 0.3);
+    border-radius: 5px;
+    height:72px;
+}
+
+div.right-part div.card div.card-body p.price{
+    background-color: rgba(200, 200, 200, 0.3);
+    border-radius: 5px;
+    height:24px;
+    font-weight: bold;
+    color:rgb(150, 150, 150);
+}
+
+div.right-part div.card div.card-body a{
+    position: relative;
+    background-color: cadetblue;
+    border-color: cadetblue;
+}
+
+@media screen and (max-width:1500px){
+    div.right-part div.card {
+        width: 95%;
+        height: 15rem;
+        display:flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+    }
+}
+
+@media screen and (max-width:800px){
+    div.left-part ul {
+        margin: 0px 5px;
+    }
+
+    div.right-part{
+        width:80%;
+    }
+    div.right-part div.card{
+        width: 100%;
+        height: 13rem;
+        display:flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    div.right-part div.card img{
+        width: 11rem;
+        height: 11rem;
+
+    }
+
+    div.right-part div.card div.card-body p.description{
+        height: 48px;
+        margin-bottom: 0px;
+    }
+
+    div.right-part div.card div.card-body p.price{
+        height: 24px;
+        margin-bottom: 2px;
+    }
+}

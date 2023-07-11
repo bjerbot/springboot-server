@@ -4,23 +4,51 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            a{
-                text-decoration:none;
-                font-weight: bold;
-            }
-        </style>
-        <title>Spring Boot Server API</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="css/index.css">
+        <title>Spring Shop</title>
     </head>
     <body>
-        <h1>Spring Boot Server</h1>
-        <h3>API 功能測試：下方為各API的功能測試頁面，可點擊測試各個功能</h3>
-        <ul>
-            <li><a href="getProductById.html">查詢商品功能測試</a></li><br>
-            <li><a href="createProduct.html">新增商品功能測試</a></li><br>
-            <li><a href="updateProduct.html">修改商品功能測試</a></li><br>
-            <li><a href="deleteProduct.html">刪除商品功能測試</a></li><br>
-        </ul>
+<!--        <h1>Spring Boot Server</h1>-->
+        <nav>
+            <h3>Spring Shop</h3>
+            <ul>
+                <li><a href=""><i class="fa-solid fa-cart-shopping"></i>購物車</a></li><br>
+                <li><a href="">登入</a></li><br>
+            </ul>
+        </nav>
+        <div class="left-part">
+            <ul>
+                <li><a href="">所有商品</a></li>
+                <li><a href="">食物</a></li>
+                <li><a href="">汽車</a></li>
+                <li><a href="">手機</a></li>
+            </ul>
+        </div>
+        <div class="right-part">
+            <div class="card">
+                <img src="..." class="image_url" alt="...">
+                <div class="card-body">
+                    <h5 class="product_name"></h5>
+                    <p class="description"></p>
+                    <p class="price"><span>NT$</span><span></span></p>
+                    <a href="#" class="btn btn-primary">加入購物車</a>
+                </div>
+            </div>
+
+        </div>
+
+<!--        <ul style="border:2px solid black">-->
+<!--            <li><a href="queryProduct.html">查詢商品功能測試</a></li><br>-->
+<!--            <li><a href="createProduct.html">新增商品功能測試</a></li><br>-->
+<!--            <li><a href="updateProduct.html">修改商品功能測試</a></li><br>-->
+<!--            <li><a href="deleteProduct.html">刪除商品功能測試</a></li><br>-->
+<!--        </ul>-->
         <p>此專案製作中，後續會持續更新......</p>
+    <script src="js/index.js"></script>
+    <script src="https://kit.fontawesome.com/a99ca61909.js" crossorigin="anonymous"></script>
     </body>
 </html>

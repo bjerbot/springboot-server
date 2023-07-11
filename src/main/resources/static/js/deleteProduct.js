@@ -11,20 +11,16 @@ deleteProductForm.addEventListener("submit", e => {
         method: "DELETE",
     }
 
+    let showResponse = document.querySelector("p.responseData");
+
     fetch(url, requestInit).then(response => {
-        if(response.ok){
+        if(response.status == 204){
             console.log(response);
-            return response.text();
+            showResponse.innerHTML = "刪除成功"
         }
         else if(response.status == 404){
-            let showResponse = document.querySelector("p.responseData");
-            showResponse.innerHTML = "沒有第" + productId + "筆資料，請重新確認"
+            showResponse.innerHTML = "請求失敗 bad request";
             throw new Error("請求失敗，狀態碼： " + response.status);
         }
-    }).then(data => {
-        console.log(data);
-
-        let showResponse = document.querySelector("p.responseData");
-        showResponse.innerHTML = data;
     })
 })

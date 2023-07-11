@@ -1,4 +1,4 @@
-package com.hung.springbootserver.rowmapper;
+package com.hung.springbootserver.mapper;
 
 import com.hung.springbootserver.constant.ProductCategory;
 import com.hung.springbootserver.model.Product;
@@ -7,8 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class ProductRpwMapper implements RowMapper {
     @Override
@@ -17,8 +15,7 @@ public class ProductRpwMapper implements RowMapper {
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
 
-        String categoryStr = rs.getString("category");
-        ProductCategory category = ProductCategory.valueOf(categoryStr);
+        ProductCategory category = ProductCategory.valueOf(rs.getString("category"));
         product.setCategory(category );
 
         product.setImageUrl(rs.getString("image_url"));

@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Validated
 @RequestMapping("/product")
 @RestController
@@ -17,6 +19,20 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+
+    //查詢所有商品Controller層
+    @GetMapping("/query_count/{count}")
+    public ResponseEntity<List<Product>> queryFewProducts(@PathVariable String count){
+        List<Product> productList= productService.queryFewProducts(count);
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
+
+    //查詢所有商品Controller層
+    @GetMapping("/queryAll")
+    public ResponseEntity<List<Product>> queryAllProducts(){
+        List<Product> productList= productService.queryAllProducts();
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
 
     //新增商品Controller層
     @PostMapping("/create")
@@ -28,8 +44,8 @@ public class ProductController {
 
     //查詢商品Controller層
     @GetMapping("/query/{productId}")
-    public ResponseEntity<Product> getProductById(@PathVariable Integer productId){
-        Product product = productService.getProductById(productId);
+    public ResponseEntity<Product> queryProductById(@PathVariable Integer productId){
+        Product product = productService.queryProductById(productId);
         if(product != null) {
             return ResponseEntity.status(HttpStatus.OK).body(product);
         }
@@ -54,12 +70,7 @@ public class ProductController {
     //刪除商品Controller層
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<String> deleteProduct(@PathVariable Integer productId){
-        Integer deleteId = productService.deleteProduct(productId);
-        if(deleteId != null) {
-            return ResponseEntity.status(HttpStatus.OK).body("成功刪除第" + productId + "項資料");
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("請求失敗，狀態碼：404");
-        }
+        productService.deleteProduct(productId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

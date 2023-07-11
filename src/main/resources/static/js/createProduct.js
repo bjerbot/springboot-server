@@ -1,4 +1,4 @@
-let createProductForm = document.querySelector("form#createProduct")-
+let createProductForm = document.querySelector("form#createProduct");
 createProductForm.addEventListener("submit", e => {
     //防止表單自動提交
     e.preventDefault();
