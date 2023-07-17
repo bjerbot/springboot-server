@@ -8,6 +8,7 @@ window.addEventListener("scroll", ()=>{
     }
 })
 
+//
 let divRightPart = document.querySelector("div.right-part");
 for(let i = 0; i < 19; i++) {
     let cloneCard = document.querySelector("div.card").cloneNode(true);

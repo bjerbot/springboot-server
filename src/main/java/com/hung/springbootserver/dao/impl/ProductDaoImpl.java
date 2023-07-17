@@ -1,6 +1,7 @@
 package com.hung.springbootserver.dao.impl;
 
 import com.hung.springbootserver.dao.ProductDao;
+import com.hung.springbootserver.dto.ProductQueryParams;
 import com.hung.springbootserver.dto.ProductRequest;
 import com.hung.springbootserver.model.Product;
 import com.hung.springbootserver.mapper.ProductRpwMapper;
@@ -22,47 +23,37 @@ public class ProductDaoImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    //查詢指定數量商品Dao層
-    public List<Product> queryFewProducts(String count){
+    //查詢指定category的商品Dao層
+    public List<Product> queryProducts(ProductQueryParams productQueryParams){
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, " +
-                "created_date, last_modified_date FROM product" +
-                " LIMIT" + count + ";";
+                "created_date, last_modified_date FROM product  WHERE 1=1";
+
         Map<String, Object> map = new HashMap<>();
+
+        //查詢條件
+        sql = addSqlQueryConditions(sql, map, productQueryParams);
+
+        //排序
+        sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
+
+        //分頁
+        sql = sql + " LIMIT :limit OFFSET :offset";
+        map.put("limit", productQueryParams.getLimit());
+        map.put("offset", productQueryParams.getOffset());
 
         return namedParameterJdbcTemplate.query(sql, map, new ProductRpwMapper());
     }
 
-    //查詢所有商品Dao層
-    public List<Product> queryAllProducts(){
-        String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, " +
-                "created_date, last_modified_date FROM product;";
-        Map<String, Object> map = new HashMap<>();
+    //查詢數量
+    public Integer countProduct(ProductQueryParams productQueryParams){
+        String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
 
-        return namedParameterJdbcTemplate.query(sql, map, new ProductRpwMapper());
-    }
+        Map<String, Object> map =new HashMap();
 
-    //新增商品Dao層
-    public Integer createProduct(ProductRequest productRequest){
-        String sql = "INSERT INTO product(product_name, category, image_url, price, stock, description, created_date, last_modified_date) " +
-                "VALUE(:productName, :category, :imageUrl, :price, :stock, :description, :createdDate, :lastModifiedDate)";
+        //查詢條件
+        sql = addSqlQueryConditions(sql, map, productQueryParams);
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("productName", productRequest.getProductName());
-        map.put("category", productRequest.getCategory().toString());
-        map.put("imageUrl", productRequest.getImageUrl());
-        map.put("price", productRequest.getPrice());
-        map.put("stock", productRequest.getStock());
-        map.put("description", productRequest.getDescription());
-
-        Instant nowDateTime = Instant.now();
-        map.put("createdDate", nowDateTime);
-        map.put("lastModifiedDate", nowDateTime);
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        int numberOfRowsAffected = namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
-        System.out.println(numberOfRowsAffected);
-        return keyHolder.getKey().intValue();
+        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
     }
 
     //查詢商品Dao層
@@ -84,6 +75,22 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    //新增商品Dao層
+    public Integer createProduct(ProductRequest productRequest){
+        String sql = "INSERT INTO product (product_name, category, image_url, price, stock, description, created_date, last_modified_date) " +
+                "VALUES (:productName, :category, :imageUrl, :price, :stock, :description, :createdDate, :lastModifiedDate)";
+
+        String create = "create";
+        Map<String, Object> map = setProductRequest(create, null, productRequest);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+        int productId = keyHolder.getKey().intValue();
+        System.out.println(productId);
+        System.out.println(productId);
+        return productId;
+    }
+
     //修改商品Dao層
     @Override
     public Integer updateProduct(Integer productId,  ProductRequest productRequest){
@@ -91,8 +98,30 @@ public class ProductDaoImpl implements ProductDao {
                 "price=:price, stock=:stock, description=:description, " +
                 "last_modified_date=:lastModifiedDate WHERE product_id=:productId;";
 
+
+        String update = "update";
+        Map<String, Object> map = setProductRequest(update, productId, productRequest);
+
+        namedParameterJdbcTemplate.update(sql, map);
+        return productId;
+    }
+
+    //刪除商品Dao層
+    @Override
+    public void deleteProductById(Integer productId) {
+        String sql = "DELETE FROM product WHERE product_id=:productId;";
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("productId", productId);
+
+        namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    private Map<String, Object> setProductRequest(String action, Integer productId,  ProductRequest productRequest){
+        HashMap<String, Object> map = new HashMap<>();
+        if(action.equals("update")) {
+            map.put("productId", productId);
+        }
         map.put("productName", productRequest.getProductName());
         map.put("category", productRequest.getCategory().toString());
         map.put("imageUrl", productRequest.getImageUrl());
@@ -101,20 +130,23 @@ public class ProductDaoImpl implements ProductDao {
         map.put("description", productRequest.getDescription());
 
         Instant nowDateTime = Instant.now();
+        if(action.equals("create")) {
+            map.put("createdDate", nowDateTime);
+        }
         map.put("lastModifiedDate", nowDateTime);
-
-        namedParameterJdbcTemplate.update(sql, map);
-        return productId;
+        return map;
     }
-
-    //刪除商品Dao層
-    @Override
-    public void deleteProduct(Integer productId) {
-        String sql = "DELETE FROM product WHERE product_id=:productId;";
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("productId", productId);
-
-        namedParameterJdbcTemplate.update(sql, map);
+    
+    private String addSqlQueryConditions(String sql, Map<String, Object> map, ProductQueryParams productQueryParams){
+        if(productQueryParams.getCategory() != null){
+            sql = sql + " AND category = :category";
+            map.put("category", productQueryParams.getCategory());
+        }
+        if(productQueryParams.getSearch() != null){
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch()+ "%");
+        }
+        System.out.println(sql);
+        return sql;
     }
 }

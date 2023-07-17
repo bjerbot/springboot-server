@@ -1,19 +1,21 @@
 package com.hung.springbootserver.controller;
 
+import com.hung.springbootserver.dto.ProductQueryParams;
 import com.hung.springbootserver.dto.ProductRequest;
 import com.hung.springbootserver.model.Product;
 import com.hung.springbootserver.service.ProductService;
+import com.hung.springbootserver.util.Page;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Validated
-@RequestMapping("/product")
 @RestController
 public class ProductController {
 
@@ -21,29 +23,35 @@ public class ProductController {
     ProductService productService;
 
     //查詢所有商品Controller層
-    @GetMapping("/query_count/{count}")
-    public ResponseEntity<List<Product>> queryFewProducts(@PathVariable String count){
-        List<Product> productList= productService.queryFewProducts(count);
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
-    }
+    @Validated
+    @GetMapping("/products")
+    public ResponseEntity<Page<Product>> queryProducts(
+            //查詢條件 Filtering
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String search,
+            //排序 Sorting
+            @RequestParam(defaultValue = "price") String orderBy,
+            @RequestParam(defaultValue = "desc") String sort,
+            //分頁 Pagination
+            @RequestParam(defaultValue = "4") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset
+            ){
 
-    //查詢所有商品Controller層
-    @GetMapping("/queryAll")
-    public ResponseEntity<List<Product>> queryAllProducts(){
-        List<Product> productList= productService.queryAllProducts();
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
-    }
+        ProductQueryParams productQueryParams =new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
 
-    //新增商品Controller層
-    @PostMapping("/create")
-    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
-        Product newProduct = productService.createProduct(productRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(newProduct);
-    }
+        Page<Product> page= productService.queryProducts(productQueryParams);
 
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
 
     //查詢商品Controller層
-    @GetMapping("/query/{productId}")
+    @GetMapping("/products/{productId}")
     public ResponseEntity<Product> queryProductById(@PathVariable Integer productId){
         Product product = productService.queryProductById(productId);
         if(product != null) {
@@ -54,8 +62,16 @@ public class ProductController {
         }
     }
 
+    //新增商品Controller層
+    @PostMapping("/products")
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
+        Product newProduct = productService.createProduct(productRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
+    }
+
+
     //修改商品Controller層
-    @PutMapping("/update/{productId}")
+    @PutMapping("/products/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                  @RequestBody @Valid ProductRequest productRequest){
         Product product = productService.updateProduct(productId, productRequest);
@@ -68,9 +84,9 @@ public class ProductController {
     }
 
     //刪除商品Controller層
-    @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Integer productId){
-        productService.deleteProduct(productId);
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<String> deleteProductById(@PathVariable Integer productId){
+        productService.deleteProductById(productId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
