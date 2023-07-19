@@ -4,7 +4,7 @@ import com.hung.springbootserver.dao.ProductDao;
 import com.hung.springbootserver.dto.ProductQueryParams;
 import com.hung.springbootserver.dto.ProductRequest;
 import com.hung.springbootserver.model.Product;
-import com.hung.springbootserver.mapper.ProductRpwMapper;
+import com.hung.springbootserver.mapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -41,7 +41,7 @@ public class ProductDaoImpl implements ProductDao {
         map.put("limit", productQueryParams.getLimit());
         map.put("offset", productQueryParams.getOffset());
 
-        return namedParameterJdbcTemplate.query(sql, map, new ProductRpwMapper());
+        return namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
     }
 
     //查詢數量
@@ -66,7 +66,7 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
 
-        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRpwMapper());
+        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
         if(productList.size() > 0) {
             return productList.get(0);
         }
@@ -86,8 +86,6 @@ public class ProductDaoImpl implements ProductDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
         int productId = keyHolder.getKey().intValue();
-        System.out.println(productId);
-        System.out.println(productId);
         return productId;
     }
 
@@ -97,7 +95,6 @@ public class ProductDaoImpl implements ProductDao {
         String sql = "UPDATE product SET product_name=:productName, category=:category, image_url=:imageUrl, " +
                 "price=:price, stock=:stock, description=:description, " +
                 "last_modified_date=:lastModifiedDate WHERE product_id=:productId;";
-
 
         String update = "update";
         Map<String, Object> map = setProductRequest(update, productId, productRequest);
@@ -146,7 +143,7 @@ public class ProductDaoImpl implements ProductDao {
             sql = sql + " AND product_name LIKE :search";
             map.put("search", "%" + productQueryParams.getSearch()+ "%");
         }
-        System.out.println(sql);
+//        System.out.println(sql);
         return sql;
     }
 }

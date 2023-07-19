@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-public class ProductRpwMapper implements RowMapper {
+public class ProductRowMapper implements RowMapper {
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Product product = new Product();
@@ -28,8 +28,6 @@ public class ProductRpwMapper implements RowMapper {
 
         product.setCreatedDate(createDate);
         product.setLastModifiedDate(lastModifiedDate);
-
-
 
         return product;
     }

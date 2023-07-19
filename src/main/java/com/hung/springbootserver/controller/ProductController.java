@@ -30,10 +30,10 @@ public class ProductController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String search,
             //排序 Sorting
-            @RequestParam(defaultValue = "price") String orderBy,
-            @RequestParam(defaultValue = "desc") String sort,
+            @RequestParam(defaultValue = "product_id") String orderBy,
+            @RequestParam(defaultValue = "asc") String sort,
             //分頁 Pagination
-            @RequestParam(defaultValue = "4") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "8") @Max(1000) @Min(0) Integer limit,
             @RequestParam(defaultValue = "0") @Min(0) Integer offset
             ){
 

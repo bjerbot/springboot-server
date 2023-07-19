@@ -22,23 +22,31 @@
         </nav>
         <div class="left-part">
             <ul>
-                <li><a href="">所有商品</a></li>
-                <li><a href="">食物</a></li>
-                <li><a href="">汽車</a></li>
-                <li><a href="">手機</a></li>
+                <li id="categoryAll"><a href="">所有商品</a></li>
+                <li id="categoryFood"><a href="">食物</a></li>
+                <li id="categoryCar"><a href="">汽車</a></li>
+                <li id="categorySmart_Phone"><a href="">手機</a></li>
             </ul>
         </div>
         <div class="right-part">
-            <div class="card">
-                <img src="..." class="image_url" alt="...">
-                <div class="card-body">
-                    <h5 class="product_name"></h5>
-                    <p class="description"></p>
-                    <p class="price"><span>NT$</span><span></span></p>
-                    <a href="#" class="btn btn-primary">加入購物車</a>
+            <div class="card_container">
+                <div class="card">
+                    <img  class="image_url">
+                    <div class="card-body">
+                        <h5 class="product_name"></h5>
+                        <p class="description"></p>
+                        <p class="price"><span>NT$</span><span></span></p>
+                        <a href="#" class="btn btn-primary">加入購物車</a>
+                    </div>
                 </div>
             </div>
-
+            <div class="btn-group" role="group" aria-label="Second group">
+                <button type="button" id="page_previous" class="btn btn-secondary"></button>
+<!--                <button type="button" id="page_1" class="btn btn-secondary">1</button>-->
+<!--                <button type="button" id="page_2" class="btn btn-secondary">2</button>-->
+<!--                <button type="button" id="page_3" class="btn btn-secondary">3</button>-->
+                <button type="button" id="page_next" class="btn btn-secondary"></button>
+            </div>
         </div>
 
 <!--        <ul style="border:2px solid black">-->
