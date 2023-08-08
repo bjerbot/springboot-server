@@ -1,8 +1,12 @@
 package com.hung.springbootserver.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class BuyItem {
 
+    @NotNull
     private Integer productId;
+    @NotNull
     private Integer quantity;
 
     public Integer getProductId() {

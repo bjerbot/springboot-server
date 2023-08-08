@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,21 @@ public class ProductDaoImpl implements ProductDao {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("productId", productId);
+
+        namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public void updateStock(Integer productId, Integer updatedStock) {
+        String sql = "UPDATE product SET stock = :stock, last_modified_date = :lastModifiedDate WHERE product_id=:productId;";
+        System.out.println(sql);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("stock", updatedStock);
+        map.put("productId", productId);
+
+        Instant nowDateTime = Instant.now();
+        map.put("lastModifiedDate", nowDateTime);
 
         namedParameterJdbcTemplate.update(sql, map);
     }

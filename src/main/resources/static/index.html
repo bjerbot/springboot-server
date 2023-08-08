@@ -9,15 +9,22 @@
               integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
               crossorigin="anonymous">
         <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/template.css">
         <title>Spring Shop</title>
     </head>
     <body>
-<!--        <h1>Spring Boot Server</h1>-->
         <nav>
-            <h3>Spring Shop</h3>
-            <ul>
+            <h3><a href="./index.html">Spring Shop</a></h3>
+            <ul id="nav_list">
+                <li><a id="user_email"
+                       class="dropdown-toggle"
+                       role="button"></a></li><br>
+                <ul id="user_menu">
+                    <li><a id="order" href="./order.html">我的訂單</a></li>
+                    <li><a id="sign_out">登出</a></li>
+                </ul>
                 <li><a href=""><i class="fa-solid fa-cart-shopping"></i>購物車</a></li><br>
-                <li><a href="">登入</a></li><br>
+                <li><a href="./user.html">登入</a></li><br>
             </ul>
         </nav>
         <div class="left-part">
@@ -42,21 +49,13 @@
             </div>
             <div class="btn-group" role="group" aria-label="Second group">
                 <button type="button" id="page_previous" class="btn btn-secondary"></button>
-<!--                <button type="button" id="page_1" class="btn btn-secondary">1</button>-->
-<!--                <button type="button" id="page_2" class="btn btn-secondary">2</button>-->
-<!--                <button type="button" id="page_3" class="btn btn-secondary">3</button>-->
+                <span id="current_page"></span>
                 <button type="button" id="page_next" class="btn btn-secondary"></button>
             </div>
         </div>
 
-<!--        <ul style="border:2px solid black">-->
-<!--            <li><a href="queryProduct.html">查詢商品功能測試</a></li><br>-->
-<!--            <li><a href="createProduct.html">新增商品功能測試</a></li><br>-->
-<!--            <li><a href="updateProduct.html">修改商品功能測試</a></li><br>-->
-<!--            <li><a href="deleteProduct.html">刪除商品功能測試</a></li><br>-->
-<!--        </ul>-->
         <p>此專案製作中，後續會持續更新......</p>
-    <script src="js/index.js"></script>
-    <script src="https://kit.fontawesome.com/a99ca61909.js" crossorigin="anonymous"></script>
+        <script src="./js/index.js"></script>
+        <script src="https://kit.fontawesome.com/a99ca61909.js" crossorigin="anonymous"></script>
     </body>
 </html>

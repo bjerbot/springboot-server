@@ -1,9 +1,12 @@
 package com.hung.springbootserver.controller;
 
+import com.hung.springbootserver.dto.TokenRequest;
 import com.hung.springbootserver.dto.UserLoginRequest;
 import com.hung.springbootserver.dto.UserRegisterRequest;
+import com.hung.springbootserver.model.AuthenticationResponse;
 import com.hung.springbootserver.model.User;
 import com.hung.springbootserver.service.UserService;
+import com.hung.springbootserver.security.JwtTokenUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
     @PostMapping("/users/register")
     public ResponseEntity<User> Register(@RequestBody @Valid UserRegisterRequest userRegisterRequest){
         User newUser = userService.createUser(userRegisterRequest);
@@ -24,9 +30,31 @@ public class UserController {
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         User user = userService.queryUserByEmail(userLoginRequest);
 
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        String token = jwtTokenUtil.generateToken(user.getEmail());
+
+        AuthenticationResponse authenticationResponse =new AuthenticationResponse();
+        authenticationResponse.setUser(user);
+        authenticationResponse.setToken(token);
+
+        return ResponseEntity.status(HttpStatus.OK).body(authenticationResponse);
+    }
+
+    @PostMapping("/validate_login_status")
+    public ResponseEntity validateLoginStatus(@RequestHeader("Authorization") String authorization, @RequestBody @Valid TokenRequest tokenRequest){
+
+        String jwtToken = authorization.replace("Bearer ", "");
+//        System.out.println(jwtToken);
+
+        boolean isLogin = jwtTokenUtil.validateToken(jwtToken, tokenRequest.getEmail());
+
+        if(isLogin){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

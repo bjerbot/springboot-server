@@ -8,10 +8,79 @@ window.addEventListener("scroll", ()=>{
     }
 })
 
+//向後端驗證token取得登入資訊
+let token = sessionStorage.getItem("token");
+let userJSONStr = sessionStorage.getItem("user");
+let email;
+
+if(userJSONStr != null && token != null && userJSONStr != undefined && token != undefined){
+    let user = JSON.parse(userJSONStr);
+    email = user.email;
+    console.log(token);
+    console.log(user);
+    console.log(email);
+
+    let url = "http://localhost:8080/validate_login_status";
+
+    let body = {
+        email
+    }
+
+    fetch(url, {
+        method:"POST",
+        headers : {
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${token}`
+        },
+        body:JSON.stringify(body)
+    })
+        .then(response => {
+        console.log(response);
+        if(response.status == 200){
+            console.log(email +"驗證成功");
+            userEmailBtn.innerHTML = email;
+            userEmailBtn.style.display = "inline"
+        }
+        else if(response.status == 401){
+            console.log("驗證失敗")
+        }
+        });
+}
+
+//使用者菜單的展開和收合
+let userEmailBtn = document.querySelector("a#user_email");
+let userMenu = document.querySelector("ul#user_menu");
+
+userEmailBtn.addEventListener("click", e => {
+
+    if(userMenu.style.display == "none" || userMenu.style.display == ""){
+        userMenu.style.display = "block";
+    }
+    else if(userMenu.style.display == "block"){
+        userMenu.style.display = "none";
+    }
+})
+
+//登出功能
+let signOutBtn = document.querySelector("a#sign_out");
+
+signOutBtn.addEventListener("click", e => {
+    console.log("sign out btn");
+
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+
+    userMenu.style.display = "none"
+    userEmailBtn.style.display = "none"
+});
+
+
+//商品列表相關變數
 let currentPage = 1;
-let cardCount = 12;
+const cardCount = 12;
 let offset = (currentPage-1)*cardCount;
 let category = "all";
+let isNextData = true;
 
 //clone商品列表
 let cardContainer = document.querySelector("div.card_container");
@@ -23,7 +92,6 @@ for(let i = 0; i < cardCount-1; i++) {
 
 //請求商品列表資料
 let categoryAllUrl = "http://localhost:8080/products?limit=" + cardCount + "&offset=" + offset;
-console.log(categoryAllUrl);
 queryProducts(categoryAllUrl);
 
 //請求商品列表(按category FOOD)
@@ -33,7 +101,7 @@ categoryFoodBtn.addEventListener("click", e => {
     e.preventDefault();
 
     currentPage = 1;
-    cardCount = 12;
+    // cardCount = 12;
     offset = (currentPage-1)*cardCount;
     category = "FOOD"
     console.log(currentPage);
@@ -41,6 +109,8 @@ categoryFoodBtn.addEventListener("click", e => {
     let categoryFoodUrl = "http://localhost:8080/products?limit=" + cardCount + "&offset=" + offset + "&category=" + category;
 
     queryProducts(categoryFoodUrl);
+
+    currentPageBar.innerHTML = currentPage;
 })
 
 //請求商品列表(按category CAR)
@@ -50,7 +120,7 @@ categoryCarBtn.addEventListener("click", e => {
     e.preventDefault();
 
     currentPage = 1;
-    cardCount = 12;
+    // cardCount = 12;
     offset = (currentPage-1)*cardCount;
     category = "CAR"
     console.log(currentPage);
@@ -58,30 +128,50 @@ categoryCarBtn.addEventListener("click", e => {
     let categoryCarUrl = "http://localhost:8080/products?limit=" + cardCount + "&offset=" + offset + "&category=" + category;
 
     queryProducts(categoryCarUrl);
+
+    currentPageBar.innerHTML = currentPage;
 })
 
 //請求商品列表(按分頁)
 let Btn_pre = document.querySelector("button#page_previous");
 let Btn_next = document.querySelector("button#page_next");
 
-Btn_next.addEventListener("click", e => {
+//第一頁時取消上一頁按鈕的點擊事件
+if(currentPage == 1){
+    Btn_pre.disabled = true;
+}
+
+Btn_next.addEventListener("click", async e => {
     e.preventDefault();
     console.log("Btn_next");
-    currentPage+=1;
+
+    currentPage += 1;
     offset += cardCount;
     console.log(currentPage);
     console.log(offset);
-    let pageUrl = "http://localhost:8080/products?limit=13&offset=" + offset;
-    if(category != "all"){
-        pageUrl=pageUrl + "&category=" + category;
+    let pageUrl = "http://localhost:8080/products?limit=" + cardCount + "&offset=" + offset;
+    if (category != "all") {
+        pageUrl = pageUrl + "&category=" + category;
     }
 
-    queryProducts(pageUrl);
+    isNextData = await queryProducts(pageUrl);
+
+    if (isNextData == false) {
+        console.log("not next data");
+        Btn_next.disabled = true;
+    }
+
+    if(currentPage > 1){
+        Btn_pre.disabled = false;
+    }
+
+    currentPageBar.innerHTML = currentPage;
 })
 
-Btn_pre.addEventListener("click", e => {
+Btn_pre.addEventListener("click", async e => {
     e.preventDefault();
     console.log("Btn_pre");
+
     if (currentPage > 1) {
         currentPage -= 1;
         offset -= cardCount;
@@ -92,18 +182,44 @@ Btn_pre.addEventListener("click", e => {
             pageUrl = pageUrl + "&category=" + category;
         }
 
-        queryProducts(pageUrl);
+        isNextData = await queryProducts(pageUrl);
+
+        if (isNextData == true) {
+            Btn_next.disabled = false;
+        }
+
+        currentPageBar.innerHTML = currentPage;
+    }
+
+    if(currentPage == 1){
+        Btn_pre.disabled = true;
     }
 })
 
-function queryProducts(url) {
-    fetch(url).then(response => {
+let currentPageBar = document.querySelector("span#current_page");
+currentPageBar.innerHTML = currentPage;
+
+async function queryProducts(url) {
+
+    return fetch(url).then(response => {
         if (response.ok) {
             return response.json();
         } else if (response.status == 404) {
             console.log("404")
         }
     }).then(data => {
+        const limit = Number(data["limit"]);
+        const offset = Number(data["offset"]);
+        let currentData = data.result.length + offset;
+        const totalData = Number(data["total"]);
+
+        console.log("資料筆數:" + data.result.length);
+        console.log("limit" + limit);
+        console.log("offset" + offset);
+        console.log("total" + totalData);
+        console.log(currentData);
+        console.log(currentData == totalData);
+
         if(data.result.length > 0){
             let card = document.querySelectorAll("div.card");
             let productName = document.querySelectorAll("h5.product_name");
@@ -127,6 +243,15 @@ function queryProducts(url) {
                     price[i].style.backgroundColor = "rgba(0, 0, 0, 0)"
                 }
             }
+        }
+
+        if(currentData == totalData){
+            console.log(false);
+            return false;
+        }
+        else{
+            console.log(true);
+            return true;
         }
     })
 }

@@ -1,0 +1,30 @@
+body{
+
+}
+div#form_container{
+    border: 2px solid black;
+    background-color: antiquewhite;
+    /*text-align: center;*/
+}
+
+div#form_container form#login_form{
+    border: 2px solid black;
+    display: inline-block;
+    text-align: start;
+}
+
+div#form_container form#login_form p a#jumpToRegister{
+    cursor: pointer;
+    color: cornflowerblue;
+}
+
+div#form_container form#register_form{
+    border: 2px solid black;
+    display: none;
+    text-align: start;
+}
+
+div#form_container form#register_form p a#jumpToLogin{
+    cursor: pointer;
+    color: cornflowerblue;
+}

@@ -1,0 +1,31 @@
+
+div#order_list{
+    border: 1px solid black;
+    width:90%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#order_list table#order_table{
+    text-align: start;
+    margin-top: 2rem;
+}
+
+
+
+div#order_list table#order_table tr{
+}
+
+div#order_list table#order_table tr th{
+    padding: 3px 80px 3px 5px;
+}
+
+div#order_list table#order_table tr td{
+    padding:3px 80px 3px 5px;
+}
+
+div#order_list p{
+    text-align: center;
+}
+
