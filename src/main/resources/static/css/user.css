@@ -1,16 +1,55 @@
 body{
+    background-color: cadetblue;
+}
 
+form p{
+    padding:5px;
 }
 div#form_container{
-    border: 2px solid black;
-    background-color: antiquewhite;
-    /*text-align: center;*/
+    display:flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+div#form_container p{
+    margin-bottom: 0;
 }
 
 div#form_container form#login_form{
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    width:400px;
+    height:500px;
+    background-color: white;
     display: inline-block;
-    text-align: start;
+    text-align: center;
+    margin:20px;
+    padding:50px;
+    border-radius: 10px;
+    box-shadow: 5px 8px 5px 0 black;
+}
+
+div#form_container form#login_form input#login_email, input#login_password{
+    width:250px;
+    height:40px;
+    background-color: #eeeeee;
+    border:none;
+    border-radius: 5px;
+    margin-bottom: 40px;
+}
+
+div#form_container form#login_form input#login_email:focus, input#login_password:focus{
+    outline: none;
+}
+
+div#form_container form#login_form input#login_submit{
+    width:250px;
+    height:40px;
+    border: none;
+    background-color: cadetblue;
+    color:white;
+    font-weight: bold;
 }
 
 div#form_container form#login_form p a#jumpToRegister{
@@ -19,12 +58,46 @@ div#form_container form#login_form p a#jumpToRegister{
 }
 
 div#form_container form#register_form{
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    width:400px;
+    height:500px;
+    background-color: white;
     display: none;
-    text-align: start;
+    text-align: center;
+    margin:20px;
+    padding:50px;
+    border-radius: 10px;
+    box-shadow: 5px 8px 5px 0 black;
+}
+
+div#form_container form#register_form input#register_email, input#register_password, input#register_conform_password{
+    width:250px;
+    height:40px;
+    background-color: #eeeeee;
+    border:none;
+    border-radius: 5px;
+    margin-bottom: 40px;
+}
+
+div#form_container form#register_form input#register_email:focus, input#register_password:focus, input#register_conform_password:focus{
+    outline: none;
+}
+
+div#form_container form#register_form input#register_submit{
+    width:250px;
+    height:40px;
+    border: none;
+    background-color: cadetblue;
+    color:white;
+    font-weight: bold;
 }
 
 div#form_container form#register_form p a#jumpToLogin{
     cursor: pointer;
     color: cornflowerblue;
+}
+
+p.back_home a{
+    color: cornflowerblue;
+    text-decoration: none;
 }

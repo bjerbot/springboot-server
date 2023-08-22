@@ -12,6 +12,7 @@ window.addEventListener("scroll", ()=>{
 let token = sessionStorage.getItem("token");
 let userJSONStr = sessionStorage.getItem("user");
 let email;
+let loginBtn = document.querySelector("a#loginPage");
 
 if(userJSONStr != null && token != null && userJSONStr != undefined && token != undefined){
     let user = JSON.parse(userJSONStr);
@@ -38,8 +39,11 @@ if(userJSONStr != null && token != null && userJSONStr != undefined && token != 
         console.log(response);
         if(response.status == 200){
             console.log(email +"驗證成功");
+
             userEmailBtn.innerHTML = email;
-            userEmailBtn.style.display = "inline"
+            userEmailBtn.style.display = "inline";
+
+            loginBtn.style.display = "none";
         }
         else if(response.status == 401){
             console.log("驗證失敗")
@@ -199,7 +203,7 @@ Btn_pre.addEventListener("click", async e => {
 let currentPageBar = document.querySelector("span#current_page");
 currentPageBar.innerHTML = currentPage;
 
-async function queryProducts(url) {
+function queryProducts(url) {
 
     return fetch(url).then(response => {
         if (response.ok) {
@@ -213,12 +217,12 @@ async function queryProducts(url) {
         let currentData = data.result.length + offset;
         const totalData = Number(data["total"]);
 
-        console.log("資料筆數:" + data.result.length);
-        console.log("limit" + limit);
-        console.log("offset" + offset);
-        console.log("total" + totalData);
-        console.log(currentData);
-        console.log(currentData == totalData);
+        // console.log("資料筆數:" + data.result.length);
+        // console.log("limit" + limit);
+        // console.log("offset" + offset);
+        // console.log("total" + totalData);
+        // console.log(currentData);
+        // console.log(currentData == totalData);
 
         if(data.result.length > 0){
             let card = document.querySelectorAll("div.card");
@@ -231,8 +235,9 @@ async function queryProducts(url) {
                 //如果資料少於12筆，刪除多餘的card
                 if (data.result.length <= i) {
                     card[i].style.display = "none";
-                } else {
+                }else {
                     card[i].style.display = "flex";
+                    card[i].dataset.info = data.result[i].productId;
                     productName[i].innerText = data.result[i].productName;
                     description[i].innerText = data.result[i].description;
                     price[i].children[1].innerText = data.result[i].price;
@@ -253,5 +258,67 @@ async function queryProducts(url) {
             console.log(true);
             return true;
         }
+    })
+}6
+
+//增加商品到購物車
+addProductToCart();
+
+function addProductToCart(){
+    let card = document.querySelectorAll("div.card");
+    let cartDataStr = localStorage.getItem("cartData");
+    let cartData;
+
+    if(cartDataStr == null){
+        cartData = [];
+    }
+    else{
+        cartData = JSON.parse(cartDataStr);
+    }
+
+    let addToCartBtn = document.querySelectorAll("a.add_to_cart");
+    addToCartBtn.forEach((a, index) => {
+        a.addEventListener("click", e => {
+            // console.log(card[index]);
+            // console.log(card[index].dataset.info);
+            // console.log(card[index].children[0].children[0].src)
+            // console.log(card[index].children[1].children[0].innerText)
+            // console.log(card[index].children[1].children[2].children[1].innerText)
+
+            //取得欄位中的商品資訊
+            let productId = card[index].dataset.info;
+
+            for(let i = 0; i < cartData.length; i++) {
+                if(productId != cartData[i]["productId"]){
+                    continue;
+                }
+                else{
+                    alert("已加入購物車");
+                    return;
+                }
+            }
+
+            let imgUrl = card[index].children[0].children[0].src;
+            let productName = card[index].children[1].children[0].innerText;
+            let price = card[index].children[1].children[2].children[1].innerText;
+            let quantity = "1";
+
+            //取出後建立物件
+            let product = {
+                productId,
+                imgUrl,
+                productName,
+                price,
+                quantity
+            }
+            console.log(product);
+
+            //將物件Push進array，轉成JSON String，存入LocalStorage
+            cartData.push(product);
+
+            let carDataJsonStr = JSON.stringify(cartData)
+
+            localStorage.setItem("cartData", carDataJsonStr);
+        })
     })
 }

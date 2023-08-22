@@ -1,0 +1,155 @@
+p{
+    margin-bottom: 0;
+}
+
+body{
+    background: rgba(220, 220, 220, 0.5);
+}
+
+ul#main{
+    /*border: 1px solid black;*/
+    list-style-type:none;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+ul#main li#cartTitle{
+    background: cadetblue;
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: white;
+    margin-top: 50px;
+    padding-left: 20px;
+}
+
+ul li#cartArea div#emptyCartDiv{
+    height: 150px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ul li#cartArea div#emptyCartDiv p{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+ul li#cartArea table tbody tr{
+    display: block;
+    border-bottom:1px solid rgba(128, 128, 128, 0.8);
+    background: white;
+}
+
+ul li#cartArea table tbody tr td.cartItem_productImg{
+    /*border:1px solid red;*/
+}
+ul li#cartArea table tbody tr td.cartItem_productImg img{
+    width: 150px;
+    height: 150px;
+}
+
+ul li#cartArea table tbody tr td.cartItem_productName{
+    /*border:1px solid red;*/
+    width: 900px;
+    height: 150px;
+    padding-left: 1rem;
+}
+
+ul li#cartArea table tbody tr td.cartItem_productName p{
+    /*border:1px solid orchid;*/
+    position: relative;
+}
+
+ul li#cartArea table tbody tr td.cartItem_quantity{
+    /*border:1px solid red;*/
+    width: 200px;
+    min-width: 100px;
+    height: 150px;
+    text-align: center;
+}
+
+ul li#cartArea table tbody tr td.cartItem_quantity *{
+    display: inline-block;
+}
+
+ul li#cartArea table tbody tr td.cartItem_quantity input{
+    width: 30px;
+    height: 40px;
+    border-radius: 5px;
+    background: white;
+    border:1px solid rgba(128, 128, 128, 0.8);
+    font-size: 1.2rem;
+}
+
+ul li#cartArea table tbody tr td.cartItem_amount{
+    /*border:1px solid red;*/
+    width: 200px;
+    height: 150px;
+    text-align: center;
+}
+
+ul li#cartArea table tbody tr td.cartItem_amount span.dollar_sign{
+    font-size: 0.8rem;
+    color: cadetblue;
+}
+
+ul li#cartArea table tbody tr td.cartItem_amount span.cartItem_amount_value{
+    /*border:1px solid orchid;*/
+    font-size: 1.2rem;
+    color: cadetblue;
+}
+
+ul li#totalArea {
+    border-bottom:1px solid rgba(128, 128, 128, 0.8);
+    background: white;
+    margin-top: 50px;
+}
+
+ul li#totalArea div{
+    height:100px;
+    display:inline-block;
+}
+
+ul li#totalArea > div:nth-child(1){
+    margin-left: 70%;
+    width:160px;
+}
+
+ul li#totalArea > div:nth-child(1) p{
+    margin-top: 38px;
+}
+
+ul li#totalArea > div:nth-child(2){
+    margin-left: 20px;
+}
+
+ul li#totalArea > div:nth-child(2) input{
+    margin-top: 38px;
+}
+
+@media  screen and (max-width:1200px){
+    ul#main{
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}
+
+@media  screen and (max-width:1000px){
+    ul li#totalArea > div:nth-child(1){
+        margin-left: 65%;
+    }
+}
+
+@media  screen and (max-width:800px){
+    ul li#totalArea > div:nth-child(1){
+        margin-left: 50%;
+    }
+}
+
+@media  screen and (max-width:700px){
+    ul li#totalArea > div:nth-child(1){
+        margin-left: 30%;
+    }
+}

@@ -11,35 +11,27 @@
       <title>登入&註冊</title>
   </head>
   <body>
-    <nav>
-      <h3><a href="./index.html">Spring Shop</a></h3>
-      <ul id="nav_list">
-          <li><a href=""><i class="fa-solid fa-cart-shopping"></i>購物車</a></li><br>
-          <li><a href="">登入</a></li><br>
-      </ul>
-    </nav>
     <div id="form_container">
+
         <form id="login_form">
-            <p>登入</p>
-            <p>帳號</p>
+            <h3>登入</h3>
             <input id="login_email" type="email" placeholder="請輸入email">
-            <p>密碼</p>
-            <input id="login_password" type="password" >
+            <input id="login_password" type="password" placeholder="請輸入密碼"><br>
             <input id="login_submit" type="submit">
             <p>還不是會員嗎 ? <a id="jumpToRegister">點此註冊</a></p>
+            <p class="back_home"><a href="index.html">返回首頁</a></p>
         </form>
 
-    <form id="register_form">
-        <p>註冊</p>
-        <p>帳號</p>
-        <input id="register_email" type="email" placeholder="請輸入email">
-        <p>密碼</p>
-        <input id="register_password" type="password" >
-        <p>確認密碼</p>
-        <input id="register_conform_password" type="password"><br>
-        <input id="register_submit" type="submit">
-        <p>已經有帳戶 <a id="jumpToLogin">點此登入</a></p>
-    </form>
+        <form id="register_form">
+            <h3>註冊</h3>
+            <input id="register_email" type="email" placeholder="請輸入email">
+            <input id="register_password" type="password" placeholder="請輸入密碼">
+            <input id="register_conform_password" type="password" placeholder="確認密碼"><br>
+            <p id="check_result"></p>
+            <input id="register_submit" type="submit">
+            <p>已經有帳戶 <a id="jumpToLogin">點此登入</a></p>
+            <p class="back_home"><a href="index.html">返回首頁</a></p>
+        </form>
 
     </div>
 
